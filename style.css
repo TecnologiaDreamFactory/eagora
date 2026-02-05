@@ -1,0 +1,1077 @@
+/* CONFIGURAÇÃO BASE */
+:root {
+    --color-danger: #0956F7; /* Azul/Ação */
+    --color-action: #0956F7; /* Azul/Sucesso */
+    --color-panel: #1e293b; /* Azul Escuro do Painel */
+    --color-bg: #0f172a; /* Fundo Muito Escuro */
+    --color-text-light: #ffffff;
+    --color-highlight: #ffffff; /* Branco/Atenção */
+}
+
+/* PREVENIR SCROLL DUPLO - APENAS HTML TEM SCROLL */
+* {
+    box-sizing: border-box;
+}
+
+html,
+html[style] {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    /* CORREÇÃO: scroll-behavior auto para não conflitar com o GSAP */
+    scroll-behavior: auto !important; 
+    /* CORREÇÃO: scroll-snap removido para parar os puxões */
+    /* scroll-snap-type: y proximity; REMOVIDO */
+    -webkit-overflow-scrolling: touch;
+}
+
+body,
+body[style] {
+    background-color: var(--color-bg);
+    font-family: 'Inter', sans-serif;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    position: relative !important;
+}
+
+/* SECTIONS - ESPAÇAMENTO BASE */
+/* Padding-top será definido individualmente para cada slide no mobile */
+.story-section {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    max-height: 100vh;
+    max-height: calc(var(--vh, 1vh) * 100);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* NÃO USAR padding shorthand - definir individualmente */
+    padding-top: 20px !important; /* Será sobrescrito nas media queries mobile */
+    padding-bottom: 20px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin: 0 !important; /* Forçar margin uniforme */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box !important; /* Garantir box-sizing */
+    /* CORREÇÃO: snap removido para evitar travamento */
+    /* scroll-snap-align: center; REMOVIDO */
+    /* scroll-snap-stop: always; REMOVIDO */
+    scroll-margin-top: 0;
+}
+
+/* FORÇAR MESMO ESPAÇAMENTO PARA TODAS AS SEÇÕES - SEM EXCEÇÕES */
+/* Padding-top será definido individualmente nas media queries para mobile */
+.story-section,
+section.story-section,
+section#section-1,
+section#section-2,
+section#section-3,
+section#section-4,
+section#section-5,
+section#section-6,
+section#section-7,
+section#section-8,
+#section-1,
+#section-2,
+#section-3,
+#section-4,
+#section-5,
+#section-6,
+#section-7,
+#section-8 {
+    /* NÃO USAR padding shorthand - definir individualmente */
+    padding-top: 20px !important; /* Será sobrescrito nas media queries mobile */
+    padding-bottom: 20px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+}
+
+/* OCULTAR PRIMEIRO SLIDE INICIALMENTE */
+#section-1 {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+}
+
+.story-section:not(#section-1) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ESTILO DO PAINEL */
+/* Aplicar mesmo padding do slide 1 para todos os slides */
+.panel {
+    min-height: auto;
+    max-height: calc(100vh - 50px);
+    width: 100%;
+    max-width: 900px;
+    padding: 32px; /* Mesmo padding do slide 1 (era 25px) */
+    border: 4px solid var(--color-highlight);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow-y: auto; /* Permitir scroll vertical se necessário */
+    overflow-x: hidden; /* Prevenir scroll horizontal */
+    background: linear-gradient(145deg, var(--color-panel) 50%, #334155);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Cores de fundo dos painéis */
+.panel-bg-red {
+    background: linear-gradient(145deg, rgba(153, 27, 27, 0.1) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-yellow {
+    background: linear-gradient(145deg, rgba(133, 77, 14, 0.1) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-green {
+    background: linear-gradient(145deg, rgba(20, 83, 45, 0.1) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-green-2 {
+    background: linear-gradient(145deg, rgba(20, 83, 45, 0.2) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-blue {
+    background: linear-gradient(145deg, rgba(30, 58, 138, 0.2) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-gray {
+    background: linear-gradient(145deg, rgba(31, 41, 55, 0.2) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-bg-red-2 {
+    background: linear-gradient(145deg, rgba(153, 27, 27, 0.2) 0%, var(--color-panel) 50%, #334155);
+}
+
+.panel-content {
+    width: 100%;
+    max-width: 100%;
+    gap: 20px; /* Mesmo gap do slide 1 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex: 1;
+    min-height: 0;
+}
+
+.panel-content-intro {
+    flex: 1;
+    margin-bottom: 15px;
+    min-height: 220px;
+    overflow: visible;
+}
+
+.panel-visual {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.panel-visual-img {
+    width: 100%;
+    max-width: 320px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.45));
+    border-radius: 12px;
+    margin-left: -35px;
+}
+
+#section-3 .panel-visual-img {
+    max-width: 384px;
+}
+
+/* Slide 4 - Ajuste para imagem não ser cortada */
+#section-4 .panel-content {
+    overflow: visible;
+}
+
+#section-4 .panel-visual {
+    overflow: visible;
+    padding-right: 20px;
+}
+
+#section-4 .panel-visual-img {
+    margin-right: 0;
+    max-width: 340px;
+}
+
+.panel-copy {
+    flex: 1;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.panel-text-frame {
+    width: 100%;
+    padding: 18px;
+    border: 4px solid var(--color-highlight);
+    border-radius: 12px;
+    background: linear-gradient(145deg, var(--color-panel) 50%, #334155);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    box-sizing: border-box;
+    min-height: 180px;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Estilos de texto removidos - agora usando Tailwind CSS */
+
+/* AJUSTES ESPECÍFICOS PARA O SLIDE 1 */
+/* Garantir centralização completa */
+#section-1 {
+    justify-content: center !important;
+    align-items: center !important;
+    display: flex !important;
+    /* Padding-top será definido nas media queries para mobile */
+}
+
+#section-1 .panel-visual {
+    overflow: visible;
+    padding-right: 20px;
+}
+
+/* Estilos de texto removidos - agora usando Tailwind CSS */
+
+#section-1 .panel-visual-img {
+    max-width: 280px;
+    margin-left: -10px;
+    margin-right: 0;
+}
+
+#section-1 .panel-text-frame {
+    padding: 16px;
+    min-height: 150px;
+    max-height: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Estilos de texto removidos - agora usando Tailwind CSS */
+
+.panel-footer {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0; /* Garantir que não encolha */
+    min-height: fit-content; /* Altura mínima baseada no conteúdo */
+}
+
+/* Estilos de texto e ícones removidos - agora usando Tailwind CSS */
+
+/* HEADER - OCULTO */
+.header-wrapper-mobile {
+    display: none !important; /* Ocultar header mobile */
+}
+
+.hq-header-desktop {
+    display: none !important; /* Ocultar header desktop */
+}
+
+.hq-header {
+    text-align: center;
+    padding: 20px 20px 15px;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 100 !important;
+    background-color: var(--color-bg);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid var(--color-highlight);
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    pointer-events: auto;
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    will-change: auto !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    margin: 0 !important;
+}
+
+.hq-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 20px;
+    padding-top: 0; /* Removido padding-top - header foi ocultado */
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    position: relative;
+}
+
+.hq-header .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        gap: 20px;
+    will-change: auto;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 900px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.hq-header .header-content h1 {
+    text-align: center;
+    flex: 1;
+    max-width: 100%;
+    margin: 0;
+}
+
+.hq-header .header-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.hq-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.hq-header > p {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+    padding-left: calc(50px + 20px);
+    box-sizing: border-box;
+    }
+
+    .hq-header h1 {
+    font-family: 'Bangers', cursive;
+    font-size: 50px;
+    color: var(--color-danger);
+    text-shadow: 3px 3px var(--color-highlight);
+    line-height: 0.9;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    }
+
+    .hq-header p {
+    color: var(--color-text-light);
+    font-size: 16px;
+    margin: 5px auto 0;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.hq-header-desktop p {
+    box-sizing: border-box;
+}
+
+/* SLIDE 8 - FINAL */
+/* Garantir que section-8 tenha o mesmo espaçamento que as outras */
+#section-8 {
+    background-color: var(--color-bg);
+    /* Padding e margin já estão definidos na regra geral acima - não sobrescrever */
+}
+
+.panel-final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 100vh;
+    gap: 30px;
+    padding: 40px 20px;
+    padding-top: 50vh;
+    position: relative;
+}
+
+.logo-final {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
+    position: relative !important;
+    transform: translateY(0);
+}
+
+/* Estilos de texto removidos - agora usando Tailwind CSS */
+
+/* FOOTER */
+.hq-footer {
+    width: 100%;
+    background-color: var(--color-action);
+    padding: 30px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    display: none !important;
+}
+
+/* Estilos de texto removidos - agora usando Tailwind CSS */
+
+/* RESPONSIVO - MOBILE */
+@media (max-width: 768px) {
+    .hq-container {
+        padding: 15px 10px;
+        padding-top: 0 !important; /* Removido - header foi ocultado */
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+
+    .panel {
+        min-height: auto;
+        max-height: calc(100vh - 20px) !important; /* Aumentado para evitar cortes */
+        padding: 18px !important; /* Reduzido de 24px para 18px para dar mais espaço */
+        max-width: 100%;
+        border-width: 3px;
+        box-sizing: border-box;
+        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-x: hidden !important;
+    }
+
+    .panel-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        gap: 20px !important;
+    }
+
+    .panel-copy {
+        min-height: auto;
+        width: 100%;
+    }
+
+    .panel-visual-img {
+        max-width: 85% !important;
+        width: auto;
+        height: auto;
+        margin-left: 0 !important;
+        margin-right: 0;
+        object-fit: contain;
+    }
+
+    #section-3 .panel-visual-img {
+        max-width: 90% !important;
+    }
+    
+    #section-4 .panel-content {
+        overflow: visible !important;
+    }
+    
+    #section-4 .panel-visual {
+        overflow: visible !important;
+        padding-right: 15px !important;
+    }
+    
+    #section-4 .panel-visual-img {
+        max-width: 90% !important;
+        margin-right: 0 !important;
+    }
+    
+    .panel-visual {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .panel-text-frame {
+        padding: 12px !important; /* Reduzido de 18px para 12px para dar mais espaço */
+        border-width: 3px;
+        min-height: 120px !important; /* Reduzido de 150px para 120px */
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Corrigir caixas de texto cortadas nos slides 2, 3 e 5 no mobile */
+    #section-2 .panel-content,
+    #section-3 .panel-content,
+    #section-5 .panel-content,
+    #section-7 .panel-content {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+    
+    #section-2 .panel-copy,
+    #section-3 .panel-copy,
+    #section-5 .panel-copy,
+    #section-7 .panel-copy {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+    
+    #section-2 .panel-text-frame,
+    #section-3 .panel-text-frame,
+    #section-5 .panel-text-frame,
+    #section-7 .panel-text-frame {
+        max-height: none !important; /* Remover limitação de altura */
+        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-x: hidden !important;
+    }
+    
+    /* Garantir que slide 7 não seja cortado no mobile */
+    #section-7 .panel-content,
+    #section-7 .panel-copy {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+
+    /* Estilos de texto removidos - agora usando Tailwind CSS */
+
+    /* Aplicar gap: 18px para todos os panel-content no mobile */
+    .panel-content {
+        gap: 10px !important; /* Reduzido de 18px para 10px para dar mais espaço */
+    }
+    
+    #section-1 .panel-visual {
+        overflow: visible !important;
+        padding-right: 15px !important;
+    }
+    
+    #section-1 .panel-visual-img {
+        max-width: 90% !important;
+        width: auto;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        object-fit: contain;
+    }
+    
+    /* Estilos de texto removidos - agora usando Tailwind CSS */
+    
+    #section-1 .panel-text-frame {
+        padding: 14px;
+        min-height: 140px;
+        max-height: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .hq-header-desktop {
+        display: none !important;
+    }
+    
+    .header-wrapper-mobile {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: translateZ(0) !important;
+        -webkit-transform: translateZ(0) !important;
+        will-change: auto !important;
+        isolation: isolate !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .header-wrapper-mobile .hq-header {
+        padding: 18px 12px 15px !important;
+        position: relative !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        z-index: 1000 !important;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        transform: none !important;
+        -webkit-transform: none !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: auto !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        box-sizing: border-box !important;
+    }
+    
+    .hq-header .header-content {
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        margin: 0 auto !important;
+        padding: 0 12px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+    }
+    
+    .hq-header .header-logo {
+        height: 42px !important;
+        width: 42px !important;
+        max-width: 42px !important;
+        min-width: 42px !important;
+        flex-shrink: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        object-fit: contain !important;
+    }
+    
+    .hq-header h1 {
+        font-size: 28px !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        text-shadow: 2px 2px var(--color-highlight) !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: calc(100vw - 120px) !important;
+        text-align: center !important;
+        word-break: keep-all !important;
+        word-wrap: normal !important;
+    }
+    
+    .hq-header p {
+        font-size: 14px !important;
+        margin-top: 8px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        line-height: 1.25 !important;
+        padding: 0 12px !important;
+        padding-left: calc(42px + 6px) !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        box-sizing: border-box !important;
+    }
+
+    
+    * {
+        max-width: 100%;
+    }
+    
+    html,
+    html[style] {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    body,
+    body[style] {
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        width: 100% !important;
+        position: relative !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .hq-container,
+    .hq-container * {
+        overflow-y: hidden !important;
+    }
+    
+    html,
+    html[style] {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+    
+    body > *,
+    body > * > * {
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+    }
+}
+
+/* RESPONSIVO - MOBILE PEQUENO */
+@media (max-width: 480px) {
+    .hq-container {
+        padding: 10px 8px;
+        padding-top: 0 !important; /* Removido - header foi ocultado */
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        overflow: hidden !important;
+    }
+
+    /* ============================================
+       MOBILE PEQUENO 480px - REGRAS GERAIS
+       ============================================ */
+
+    .panel {
+        min-height: auto;
+        max-height: calc(100vh - 15px) !important; /* Aumentado para evitar cortes */
+        padding: 15px !important; /* Reduzido de 24px para 15px para dar mais espaço */
+        border-width: 2px;
+        box-sizing: border-box;
+        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-x: hidden !important;
+    }
+
+    .panel-visual-img {
+        max-width: 80% !important;
+        width: auto;
+        height: auto;
+        margin-left: 0 !important;
+        margin-right: 0;
+        object-fit: contain;
+    }
+
+    #section-3 .panel-visual-img {
+        max-width: 85% !important;
+    }
+    
+    #section-4 .panel-content {
+        overflow: visible !important;
+    }
+    
+    #section-4 .panel-visual {
+        overflow: visible !important;
+        padding-right: 10px !important;
+    }
+    
+    #section-4 .panel-visual-img {
+        max-width: 88% !important;
+        margin-right: 0 !important;
+    }
+    
+    .panel-visual {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .panel-content {
+        gap: 20px !important;
+    }
+
+    .panel-text-frame {
+        padding: 10px !important; /* Reduzido de 18px para 10px para dar mais espaço */
+        border-width: 2px;
+        min-height: 100px !important; /* Reduzido de 140px para 100px */
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Corrigir caixas de texto cortadas nos slides 2, 3 e 5 no mobile pequeno */
+    #section-2 .panel-content,
+    #section-3 .panel-content,
+    #section-5 .panel-content,
+    #section-7 .panel-content {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+    
+    #section-2 .panel-copy,
+    #section-3 .panel-copy,
+    #section-5 .panel-copy,
+    #section-7 .panel-copy {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+    
+    #section-2 .panel-text-frame,
+    #section-3 .panel-text-frame,
+    #section-5 .panel-text-frame,
+    #section-7 .panel-text-frame {
+        max-height: none !important; /* Remover limitação de altura */
+        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-x: hidden !important;
+    }
+    
+    /* Garantir que slide 7 não seja cortado no mobile pequeno */
+    #section-7 .panel-content,
+    #section-7 .panel-copy {
+        overflow: visible !important; /* Permitir que conteúdo não seja cortado */
+    }
+
+    /* Estilos de texto removidos - agora usando Tailwind CSS */
+
+    .header-wrapper-mobile {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: translateZ(0) !important;
+        -webkit-transform: translateZ(0) !important;
+        will-change: auto !important;
+        isolation: isolate !important;
+        overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .header-wrapper-mobile .hq-header {
+        padding: 15px 10px 12px !important;
+        position: relative !important;
+        top: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        z-index: 1000 !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        -webkit-backface-visibility: hidden !important;
+        backface-visibility: hidden !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        pointer-events: auto !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+    
+    .hq-header .header-content {
+        gap: 5px !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        margin: 0 auto !important;
+        padding: 0 10px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+    }
+    
+    .hq-header .header-logo {
+        height: 38px !important;
+        width: 38px !important;
+        max-width: 38px !important;
+        min-width: 38px !important;
+        flex-shrink: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        object-fit: contain !important;
+    }
+    
+    .hq-header h1 {
+        font-size: 26px !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        text-shadow: 2px 2px var(--color-highlight) !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: calc(100vw - 110px) !important;
+        text-align: center !important;
+        word-break: keep-all !important;
+        word-wrap: normal !important;
+    }
+    
+    .hq-header p {
+        font-size: 13px !important;
+        margin-top: 6px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        text-align: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        line-height: 1.25 !important;
+        padding: 0 10px !important;
+        padding-left: calc(38px + 5px) !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        box-sizing: border-box !important;
+    }
+
+}
+
+/* ============================================
+   REGRAS FINAIS MOBILE - MÁXIMA PRIORIDADE - ESPAÇAMENTO PADRONIZADO
+   ============================================ */
+@media (max-width: 768px) {
+    /* TODOS OS SLIDES (1-8) - PADDING PADRONIZADO */
+    section#section-1.story-section,
+    section#section-2.story-section,
+    section#section-3.story-section,
+    section#section-4.story-section,
+    section#section-5.story-section,
+    section#section-6.story-section,
+    section#section-7.story-section,
+    section#section-8.story-section,
+    .story-section#section-1,
+    .story-section#section-2,
+    .story-section#section-3,
+    .story-section#section-4,
+    .story-section#section-5,
+    .story-section#section-6,
+    .story-section#section-7,
+    .story-section#section-8,
+    #section-1,
+    #section-2,
+    #section-3,
+    #section-4,
+    #section-5,
+    #section-6,
+    #section-7,
+    #section-8 {
+        padding-top: 20px !important; /* Espaçamento padrão para todos */
+        padding-bottom: 20px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Garantir centralização do slide 1 */
+    #section-1 {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* TODOS OS SLIDES (1-8) - PADDING PADRONIZADO */
+    section#section-1.story-section,
+    section#section-2.story-section,
+    section#section-3.story-section,
+    section#section-4.story-section,
+    section#section-5.story-section,
+    section#section-6.story-section,
+    section#section-7.story-section,
+    section#section-8.story-section,
+    .story-section#section-1,
+    .story-section#section-2,
+    .story-section#section-3,
+    .story-section#section-4,
+    .story-section#section-5,
+    .story-section#section-6,
+    .story-section#section-7,
+    .story-section#section-8,
+    #section-1,
+    #section-2,
+    #section-3,
+    #section-4,
+    #section-5,
+    #section-6,
+    #section-7,
+    #section-8 {
+        padding-top: 20px !important; /* Espaçamento padrão para todos */
+        padding-bottom: 20px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Garantir centralização do slide 1 */
+    #section-1 {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
