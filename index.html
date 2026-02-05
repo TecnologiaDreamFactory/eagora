@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamers contra o Sombra- HQ</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <link rel="shortcut icon" type="image/png" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <script>
+        // Força o carregamento do favicon
+        (function() {
+            const link = document.createElement('link');
+            link.rel = 'icon';
+            link.type = 'image/png';
+            link.href = 'img/logo.png?' + new Date().getTime(); // Cache buster
+            const existingLink = document.querySelector('link[rel="icon"]');
+            if (existingLink) {
+                existingLink.parentNode.removeChild(existingLink);
+            }
+            document.getElementsByTagName('head')[0].appendChild(link);
+        })();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" onerror="console.error('Erro ao carregar GSAP')"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" onerror="console.error('Erro ao carregar ScrollTrigger')"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Tratamento de erros globais para evitar erros de extensões do navegador
+        window.addEventListener('error', function(e) {
+            // Suprimir erros relacionados a service workers e extensões
+            if (e.message && (
+                e.message.includes('canal de mensagens') ||
+                e.message.includes('message channel') ||
+                e.message.includes('service worker') ||
+                e.message.includes('chrome.runtime') ||
+                e.message.includes('extension')
+            )) {
+                e.preventDefault();
+                return false;
+            }
+        }, true);
+
+        // Tratamento de promessas rejeitadas não capturadas
+        window.addEventListener('unhandledrejection', function(e) {
+            // Suprimir erros relacionados a service workers e extensões
+            if (e.reason && (
+                (typeof e.reason === 'string' && (
+                    e.reason.includes('canal de mensagens') ||
+                    e.reason.includes('message channel') ||
+                    e.reason.includes('service worker') ||
+                    e.reason.includes('chrome.runtime') ||
+                    e.reason.includes('extension')
+                )) ||
+                (e.reason.message && (
+                    e.reason.message.includes('canal de mensagens') ||
+                    e.reason.message.includes('message channel') ||
+                    e.reason.message.includes('service worker') ||
+                    e.reason.message.includes('chrome.runtime') ||
+                    e.reason.message.includes('extension')
+                ))
+            )) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // GARANTIR QUE SLIDES FICAM OCULTOS IMEDIATAMENTE (HEADER REMOVIDO)
+        (function() {
+            // Ocultar primeiro slide
+            const firstSection = document.querySelector('#section-1');
+            if (firstSection) {
+                firstSection.style.opacity = '0';
+                firstSection.style.visibility = 'hidden';
+                firstSection.style.display = 'none';
+            }
+            
+            // Ocultar TODOS os slides seguintes (2, 3, 4, etc.)
+            const allSections = document.querySelectorAll('.story-section');
+            allSections.forEach((section, index) => {
+                if (index > 0) { // Pular primeiro slide
+                    section.style.opacity = '0';
+                    section.style.visibility = 'hidden';
+                    section.style.pointerEvents = 'none';
+                }
+            });
+            
+            // GARANTIR QUE FOOTER ESTÁ COMPLETAMENTE OCULTO
+            const footer = document.querySelector('.hq-footer');
+            if (footer) {
+                footer.style.opacity = '0';
+                footer.style.visibility = 'hidden';
+                footer.style.display = 'none';
+            }
+        })();
+    </script>
+</head>
+<body>
+
+<!-- LOADER DE SEGURANÇA -->
+<div id="security-loader" class="fixed inset-0 z-[9999] flex items-center justify-center relative">
+    <!-- Camada Pixelada -->
+    <div class="pixel-layer absolute inset-0 pointer-events-none z-0"></div>
+    
+    <div class="text-center px-6 max-w-md w-full relative z-10 flex flex-col items-center justify-center">
+        <!-- Logo -->
+        <div class="mb-8">
+            <img src="img/logo.png" alt="Logo" class="w-24 h-24 mx-auto drop-shadow-2xl loader-logo">
+        </div>
+        
+        <!-- Título -->
+        <h2 class="text-white text-xl md:text-2xl font-bold mb-8 font-['Bangers'] tracking-[2px] leading-tight">
+            Com sete slides vamos te ajudar a se proteger caso perca seu celular.
+        </h2>
+        
+        <!-- Barra de Progresso -->
+        <div class="relative w-full h-3 bg-gray-700 rounded-full overflow-hidden mb-4 shadow-inner">
+            <div id="progress-bar" class="progress-bar-fill h-full rounded-full transition-all duration-300 ease-out" style="width: 0%;"></div>
+        </div>
+        
+        <!-- Porcentagem -->
+        <div class="text-white text-lg font-bold mb-8">
+            <span id="progress-text">0</span>%
+        </div>
+        
+        <!-- Mensagem de Status -->
+        <div id="status-text" class="text-gray-300 text-base md:text-lg text-center min-h-[40px] w-full flex items-center justify-center">
+            <div id="current-slide" class="slide-fade-in text-center w-full"></div>
+        </div>
+    </div>
+</div>
+
+<!-- LOADING - ESTILO HQ (DESABILITADO TEMPORARIAMENTE) -->
+<!--
+<div id="hq-loading" class="hq-loading hidden">
+    <div class="hq-loading-container">
+        <div class="hq-panel hq-panel-1" data-panel="1">
+            <div class="hq-panel-content">
+                <h2 class="hq-panel-title">Segurança Digital.</h2>
+                <p class="hq-panel-text">A dependência crescente de tecnologias digitais coloca a segurança da informação no centro de todas as operações corporativas. Em um mundo onde as ameaças cibernéticas evoluem incessantemente, a defesa dos nossos ativos digitais exige uma abordagem proativa e colaborativa. Este projeto nasce da necessidade de fortalecer o elo mais crucial da nossa cadeia de proteção: o colaborador. Não basta ter firewalls e softwares avançados; a linha de frente contra invasões e perdas de dados é formada por práticas individuais rigorosas e conscientes.</p>
+            </div>
+        </div>
+        <div class="hq-panel hq-panel-2" data-panel="2">
+            <div class="hq-panel-content">
+                <p class="hq-panel-text">A vulnerabilidade muitas vezes reside em ações simples, como o uso de senhas fracas, a negligência em ativar a verificação em duas etapas ou a falta de protocolos em casos de emergência. Cada membro da equipe tem a responsabilidade intransferível de proteger seus acessos e dispositivos.</p>
+            </div>
+        </div>
+        <div class="hq-panel hq-panel-3" data-panel="3">
+            <div class="hq-panel-content">
+                <p class="hq-panel-text">Este material visa equipar você com o conhecimento essencial para agir rapidamente e de forma eficaz. Desde as medidas básicas e preventivas (uso de biometria e senhas fortes) até os procedimentos de emergência nos "primeiros cinco minutos" após um incidente (bloqueio remoto e deslogar de contas), o foco é transformar o risco em resiliência.</p>
+            </div>
+        </div>
+        <div class="hq-panel hq-panel-4" data-panel="4">
+            <div class="hq-panel-content">
+                <p class="hq-panel-text">Em qualquer cenário de crise, a equipe de TI está pronta para intervir. No entanto, a base de toda recuperação eficiente é a sua preparação. Ao adotar integralmente as diretrizes aqui apresentadas, garantimos a integridade dos nossos dados e a continuidade dos nossos negócios, transformando a segurança digital em um valor fundamental da nossa cultura.</p>
+            </div>
+        </div>
+        <div class="hq-panel hq-panel-5" data-panel="5">
+            <div class="hq-panel-content">
+                <p class="hq-panel-text">A colaboração entre o usuário e a TI é o pilar desta estratégia. Ao seguir os passos preventivos e saber como acionar o suporte de emergência, você se torna um agente ativo na proteção do patrimônio da empresa. Nossa segurança é uma responsabilidade compartilhada e o sucesso deste projeto depende do seu compromisso.</p>
+            </div>
+        </div>
+        <div class="hq-panel hq-panel-final" data-panel="6">
+            <div class="hq-panel-content hq-panel-button">
+                <img src="img/logo.png" alt="Logo Dream Factory" class="hq-loading-logo" id="hq-loading-button">
+                <p class="hq-loading-hint">Clique no logo para começar</p>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<div class="hq-container">
+    <!-- SECTION 1: O ASSALTO (A Ameaça) -->
+    <section class="story-section" id="section-1">
+        <div class="panel panel-bg-red">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">1. ACONTECEU E AGORA? PRIORIDADE Nº 1: SEGURANÇA</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide1cont.png" alt="Ilustração da correria de Mariana" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Antes de tudo, mantenha a calma. Não tente reagir, perseguir ou negociar com o agressor — dispositivos e contas podem ser bloqueados depois.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Proteja-se e tente se afastar do local rapidamente.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full">• Procure um local seguro (comércio, posto policial, pessoas).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-lg md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-slate-900 bg-white border-2 border-slate-900 my-2.5 md:my-2 shadow-[0_4px_0_#b45309]">
+                    O Sombra levou o celular! A corrida para proteger a vida digital começou.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: O FOCO (A Realização do Perigo) -->
+    <section class="story-section" id="section-2">
+        <div class="panel panel-bg-yellow">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">2. O QUE FAZER NOS PRIMEIROS 5 MINUTOS - AÇÕES DE EMERGENCIA</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide2cont.png" alt="Ilustração das ações de emergência" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Se conseguir acesso a outro celular ou computador:</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Altere a senha do e-mail principal — é a porta de entrada para tudo.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Bloqueie o celular remotamente</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Deslogue de todos os dispositivos (Google / Apple).</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Ative o modo perdido ou bloqueio com mensagem na tela.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">
+                            Android: <a href="https://support.google.com/android/answer/15146908?hl=pt-BR" target="_blank" class="text-white underline hover:text-[#0956F7] hover:no-underline break-all max-w-full inline-block transition-colors duration-300">https://support.google.com/android/answer/15146908?hl=pt-BR</a>
+                        </p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full">
+                            iPhone: <a href="https://support.apple.com/pt-br/120340" target="_blank" class="text-white underline hover:text-[#0956F7] hover:no-underline break-all max-w-full inline-block transition-colors duration-300">https://support.apple.com/pt-br/120340</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-xl md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-white bg-[#0956F7] border-2 border-white my-2.5 md:my-2 shadow-[0_4px_0_#047857]">
+                    AGORA O SOMBRA PERDEU O ACESSO AO E-MAIL E AO APARELHO!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: AÇÃO URGENTE (Bloqueio Principal) -->
+    <section class="story-section" id="section-3">
+        <div class="panel panel-bg-green">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">3. PROVIDÊNCIAS BANCÁRIAS E TELEFÔNICAS</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide3cont.png" alt="Ilustração das providências bancárias" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>1. Bloqueie os apps bancários pela:</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Central telefônica</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Caixa eletrônico (alguns bancos permitem)</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>2. Solicite bloqueio de cartões de crédito/débito (físicos e virtuais).</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Se tiver PIX, ative limite emergencial ou bloqueio preventivo total</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Revise movimentações suspeitas nas próximas horas.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full"><strong>3. Ligue para a operadora e bloqueie o número e com o IMEI em mãos bloqueie o Aparelho.</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-lg md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-slate-900 bg-white border-2 border-slate-900 my-2.5 md:my-2 shadow-[0_4px_0_#b45309]">
+                    Prioridade: Ligar para o Banco e Bloquear o Aplicativo! Ligar para a Operadora e Bloquear o Chip!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: A CHAVE MESTRA (E-mail) -->
+    <section class="story-section" id="section-4">
+        <div class="panel panel-bg-green-2">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">4. CONTAS E APLICATIVOS CRÍTICOS</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide4cont.png" alt="Ilustração das contas e aplicativos críticos" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>Priorize:</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">E-mail principal (Gmail, Outlook, etc.)</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">WhatsApp</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Instagram / Linkedin / Facebook</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Carteiras (PayPal, Mercado Pago, PicPay, etc.)</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full">Nuvem de fotos: Google Drive / iCloud</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-xl md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-white bg-[#0956F7] border-2 border-white my-2.5 md:my-2 shadow-[0_4px_0_#047857]">
+                    E-mail Mestre! Mudar a senha e forçar o logout de TUDO! Ele não terá mais a chave!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: O RASTREIO (Localização e Limpeza) -->
+    <section class="story-section" id="section-5">
+        <div class="panel panel-bg-blue">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">5. MEDIDAS LEGAIS E DE SEGURANÇA EXTRA</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide5cont.png" alt="Ilustração das medidas legais e de segurança extra" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>Depois de tudo bloqueado</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Registre um Boletim de Ocorrência (pode ser online em muitos estados).</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Solicite troca do chip/linha.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Avise contatos próximos para evitar golpes (WhatsApp falso).</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full">• Ative monitoramento de crédito.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-lg md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-slate-900 bg-white border-2 border-slate-900 my-2.5 md:my-2 shadow-[0_4px_0_#b45309]">
+                    Continue criando camadas extras de proteção!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: A PROVA (Boletim de Ocorrência) -->
+    <section class="story-section" id="section-6">
+        <div class="panel panel-bg-gray">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">6. COMO PREVENIR FUTUROS PROBLEMAS</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide6cont.png" alt="Ilustração de como prevenir futuros problemas" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>COMO PREVENIR FUTUROS PROBLEMAS</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>Segurança digital preventiva</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Use senha forte + biometria + senha do chip.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Não deixe agência e conta salvas no aplicativo bancário.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Ative verificação em duas etapas em tudo.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Evite deixar apps logados sem PIN (senha) próprio (bancos, WhatsApp, e-mail).</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Nunca deixe senha escrita em bloco de notas.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full">Mantenha backups automáticos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-xl md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-white bg-[#0956F7] border-2 border-white my-2.5 md:my-2 shadow-[0_4px_0_#047857]">
+                    Prevenção nunca é demais!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: O PESO DE PAPEL (IMEI) -->
+    <section class="story-section" id="section-7">
+        <div class="panel panel-bg-red-2">
+            <h2 class="font-['Bangers'] text-4xl md:text-3xl leading-tight text-white uppercase tracking-wide mb-4 pb-0 drop-shadow-[2px_2px_0_rgba(15,23,42,1)]">7. CONTE COM A EQUIPE DE TI</h2>
+            <div class="panel-content panel-content-intro">
+                <div class="panel-visual">
+                    <img src="img/slide7cont.png" alt="Ilustração da equipe de TI" class="panel-visual-img">
+                </div>
+                <div class="panel-copy">
+                    <div class="panel-text-frame">
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>🚨 Suporte da TI: Estamos com Você</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">A equipe de Tecnologia da Informação (TI) oferece apoio total em momentos de emergência ou suspeita de invasão.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">Contudo, sua ação preventiva é insubstituível. As medidas de segurança que indicamos (senha forte + biometria + senha do chip, MFA em tudo, e backups automáticos) são cruciais para proteger seus dados e facilitar nossa intervenção.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full"><strong>Como podemos auxiliar: solicite ao seu gestor:</strong></p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• O bloqueio imediato da sua conta corporativa.</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-2.5 md:mb-2 break-words max-w-full">• Caso tenha número e ou celular da empresa, solicite o bloqueio da chip e do aparelho</p>
+                        <p class="font-['Inter'] text-sm md:text-xs leading-[1.4] md:leading-[1.25] text-white mb-0 break-words max-w-full"><strong>Dúvidas ou auxílio? Acione-nos a qualquer momento: <a href="mailto:ti@dreamfactory.com.br" class="text-white underline hover:text-[#0956F7] hover:no-underline break-all max-w-full inline-block transition-colors duration-300">ti@dreamfactory.com.br</a></strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="font-['Bangers'] text-lg md:text-sm leading-[1.2] md:leading-[1.15] px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg uppercase text-slate-900 bg-white border-2 border-slate-900 my-2.5 md:my-2 shadow-[0_4px_0_#b45309]">
+                    Estamos aqui para apoiar, é só avisar!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: Final -->
+    <section class="story-section" id="section-8">
+        <div class="panel-final">
+            <img src="img/logo2.png" alt="Logo Dream Factory" class="logo-final">
+            <p class="font-['Bangers'] text-[42px] md:text-3xl text-white drop-shadow-[3px_3px_0_rgba(15,23,42,1)] text-center m-0 uppercase">Juntos Somos Fortes!</p>
+        </div>
+    </section>
+
+</div>
+
+<!-- FOOTER
+<footer class="hq-footer">
+    <p class="footer-text">© 2025 Criado no Laboratório de Tecnologia da Dream Factory - Todos os direitos reservados</p>
+</footer>-->
+
+<script src="loader.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
