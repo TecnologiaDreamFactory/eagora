@@ -1,0 +1,110 @@
+/* LOADER DE SEGURANÇA - ESTILOS PERSONALIZADOS */
+
+/* BLOQUEAR SCROLL DURANTE LOADER */
+body.loader-active {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#security-loader {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+}
+
+/* Animação do logo */
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 20px rgba(9, 86, 247, 0.3));
+    }
+    50% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 30px rgba(9, 86, 247, 0.5));
+    }
+}
+
+.loader-logo {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Barra de progresso com brilho */
+.progress-bar-fill {
+    background: linear-gradient(90deg, #0956F7 0%, #60a5fa 100%);
+    box-shadow: 0 0 20px rgba(9, 86, 247, 0.5);
+}
+
+/* Camada Pixelada */
+.pixel-layer {
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15) 0px,
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.15) 0px,
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    background-size: 4px 4px;
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    animation: pixel-scan 0.1s linear infinite;
+}
+
+@keyframes pixel-scan {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 4px 4px;
+    }
+}
+
+/* Fade in/out dos slides */
+.slide-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.slide-fade-out {
+    opacity: 1;
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+/* Fade out do loader */
+.loader-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
