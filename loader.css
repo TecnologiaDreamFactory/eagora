@@ -14,6 +14,18 @@ body.loader-active {
     align-items: center !important;
     justify-content: center !important;
     min-height: 100vh !important;
+    height: 100vh !important;
+    overflow: hidden !important; /* Evita barra de rolagem dentro do loader */
+}
+
+/* Versão mobile: garantir que o loader ocupe exatamente a tela, sem scroll */
+@media (max-width: 768px) {
+    #security-loader {
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: 100vh !important;
+        overflow: hidden !important;
+    }
 }
 
 /* Animação do logo */
