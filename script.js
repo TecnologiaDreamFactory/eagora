@@ -246,6 +246,38 @@
                 { opacity: 1, scaleX: 1, scaleY: 1, filter: "blur(0px)", duration: 1.5, ease: "back.out(1.7)" }, 
                 "-=1"
             );
+
+            // ============================================
+            // FOOTER - ANIMAÇÃO (aparece quando slide 8 está visível)
+            // ============================================
+            const footer = document.querySelector('#hq-footer');
+            if (footer) {
+                // Inicializar footer como oculto
+                gsap.set(footer, { 
+                    opacity: 0, 
+                    y: 50,
+                    visibility: 'hidden',
+                    display: 'block'
+                });
+
+                // ScrollTrigger para mostrar footer quando slide 8 estiver visível
+                ScrollTrigger.create({
+                    trigger: section8,
+                    start: "bottom bottom",
+                    end: "bottom top",
+                    onEnter: () => {
+                        gsap.to(footer, {
+                            opacity: 1,
+                            y: 0,
+                            visibility: 'visible',
+                            duration: 1,
+                            ease: "power2.out",
+                            delay: 0.5
+                        });
+                    },
+                    once: true // Executar apenas uma vez
+                });
+            }
         }
 
         // ============================================
