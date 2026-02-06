@@ -24,8 +24,8 @@
     
     function updateProgress() {
         if (progress < 100) {
-            // Incremento variável mais lento para dar tempo de ler
-            const increment = Math.random() * 0.8 + 0.5;
+            // Incremento variável mais rápido
+            const increment = Math.random() * 1.5 + 1.0;
             progress = Math.min(progress + increment, 100);
             
             progressBar.style.width = progress + '%';
@@ -36,8 +36,8 @@
                 showAbrindo();
             }
             
-            // Intervalo maior para tornar mais lento
-            setTimeout(updateProgress, 100);
+            // Intervalo menor para aumentar velocidade
+            setTimeout(updateProgress, 50);
         } else {
             // Progresso completo
             progress = 100;
@@ -65,7 +65,7 @@
                         window.dispatchEvent(new Event('loaderComplete'));
                     }, 500);
                 }
-            }, 1500);
+            }, 800);
         }
     }
     
