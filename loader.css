@@ -120,3 +120,90 @@ body.loader-active {
     opacity: 0;
     transition: opacity 0.5s ease-out;
 }
+
+/* Destaque para a frase principal do loader */
+#security-loader h2 {
+    font-size: 1.5rem !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-shadow: 
+        0 0 10px rgba(9, 86, 247, 0.8),
+        0 0 20px rgba(9, 86, 247, 0.6),
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(9, 86, 247, 0.4) !important;
+    animation: highlight-pulse 2s ease-in-out infinite !important;
+    letter-spacing: 1px !important;
+    line-height: 1.3 !important;
+}
+
+@keyframes highlight-pulse {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 
+            0 0 10px rgba(9, 86, 247, 0.8),
+            0 0 20px rgba(9, 86, 247, 0.6),
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(9, 86, 247, 0.4);
+    }
+    50% {
+        transform: scale(1.02);
+        text-shadow: 
+            0 0 15px rgba(9, 86, 247, 1),
+            0 0 25px rgba(9, 86, 247, 0.8),
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(9, 86, 247, 0.6);
+    }
+}
+
+/* Versão mobile - ajustar tamanho da fonte */
+@media (max-width: 768px) {
+    #security-loader h2 {
+        font-size: 1.25rem !important;
+        padding: 0 10px !important;
+    }
+}
+
+/* Destaque para o texto "Abrindo" em verde */
+#current-slide {
+    font-size: 1.5rem !important;
+    font-weight: 900 !important;
+}
+
+#current-slide span {
+    color: #4ade80 !important;
+    text-shadow: 
+        0 0 10px rgba(74, 222, 128, 0.8),
+        0 0 20px rgba(74, 222, 128, 0.6),
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(74, 222, 128, 0.4) !important;
+    animation: highlight-pulse-green 2s ease-in-out infinite !important;
+    letter-spacing: 1px !important;
+    line-height: 1.3 !important;
+    display: inline-block !important;
+}
+
+@keyframes highlight-pulse-green {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 
+            0 0 10px rgba(74, 222, 128, 0.8),
+            0 0 20px rgba(74, 222, 128, 0.6),
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(74, 222, 128, 0.4);
+    }
+    50% {
+        transform: scale(1.02);
+        text-shadow: 
+            0 0 15px rgba(74, 222, 128, 1),
+            0 0 25px rgba(74, 222, 128, 0.8),
+            2px 2px 4px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(74, 222, 128, 0.6);
+    }
+}
+
+/* Versão mobile - ajustar tamanho do "Abrindo" */
+@media (max-width: 768px) {
+    #current-slide {
+        font-size: 1.25rem !important;
+    }
+}
