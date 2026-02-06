@@ -486,13 +486,20 @@ section#section-8,
 
     .panel {
         min-height: auto;
-        max-height: calc(100vh - 20px) !important; /* Aumentado para evitar cortes */
+        max-height: none !important; /* Permitir que o painel cresça conforme o conteúdo */
         padding: 18px !important; /* Reduzido de 24px para 18px para dar mais espaço */
         max-width: 100%;
         border-width: 3px;
         box-sizing: border-box;
-        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-y: visible !important; /* Deixar o scroll para a página, não dentro do painel */
         overflow-x: hidden !important;
+    }
+
+    /* Em mobile, cada slide pode ter altura maior que a tela para não apertar texto/imagem */
+    .story-section {
+        min-height: auto !important;
+        height: auto !important;
+        max-height: none !important;
     }
 
     .panel-content {
@@ -790,12 +797,19 @@ section#section-8,
 
     .panel {
         min-height: auto;
-        max-height: calc(100vh - 15px) !important; /* Aumentado para evitar cortes */
+        max-height: none !important; /* Permitir que o painel cresça conforme o conteúdo */
         padding: 15px !important; /* Reduzido de 24px para 15px para dar mais espaço */
         border-width: 2px;
         box-sizing: border-box;
-        overflow-y: auto !important; /* Permitir scroll se necessário */
+        overflow-y: visible !important; /* Deixar o scroll para a página, não dentro do painel */
         overflow-x: hidden !important;
+    }
+
+    /* Mobile bem pequeno: também liberar altura dos slides */
+    .story-section {
+        min-height: auto !important;
+        height: auto !important;
+        max-height: none !important;
     }
 
     .panel-visual-img {
