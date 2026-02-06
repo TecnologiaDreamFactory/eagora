@@ -459,14 +459,53 @@ section#section-8,
 /* FOOTER */
 .hq-footer {
     width: 100%;
-    background-color: var(--color-action);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     padding: 30px 20px;
     text-align: center;
     position: relative;
     z-index: 10;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    border-top: 2px solid var(--color-highlight);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hq-footer.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0);
+}
+
+.footer-text {
+    color: var(--color-text-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Responsivo mobile */
+@media (max-width: 768px) {
+    .hq-footer {
+        padding: 25px 15px;
+    }
+    
+    .footer-text {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hq-footer {
+        padding: 20px 12px;
+    }
+    
+    .footer-text {
+        font-size: 11px;
+    }
 }
 
 /* Estilos de texto removidos - agora usando Tailwind CSS */
