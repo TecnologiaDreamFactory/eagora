@@ -3,25 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dreamers contra o Sombra- HQ</title>
+    <title>E AGORA?</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="img/logo.png">
-    <link rel="shortcut icon" type="image/png" href="img/logo.png">
-    <link rel="apple-touch-icon" href="img/logo.png">
-    <script>
-        // Força o carregamento do favicon
-        (function() {
-            const link = document.createElement('link');
-            link.rel = 'icon';
-            link.type = 'image/png';
-            link.href = 'img/logo.png?' + new Date().getTime(); // Cache buster
-            const existingLink = document.querySelector('link[rel="icon"]');
-            if (existingLink) {
-                existingLink.parentNode.removeChild(existingLink);
-            }
-            document.getElementsByTagName('head')[0].appendChild(link);
-        })();
-    </script>
+    <link rel="icon" type="image/png" sizes="any" href="img/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/logo.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" onerror="console.error('Erro ao carregar GSAP')"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" onerror="console.error('Erro ao carregar ScrollTrigger')"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,13 +79,7 @@
                 }
             });
             
-            // GARANTIR QUE FOOTER ESTÁ COMPLETAMENTE OCULTO
-            const footer = document.querySelector('.hq-footer');
-            if (footer) {
-                footer.style.opacity = '0';
-                footer.style.visibility = 'hidden';
-                footer.style.display = 'none';
-            }
+            // Footer será mostrado após animação do slide 8
         })();
     </script>
 </head>
@@ -381,10 +363,10 @@
 
 </div>
 
-<!-- FOOTER
-<footer class="hq-footer">
-    <p class="footer-text">© 2025 Criado no Laboratório de Tecnologia da Dream Factory - Todos os direitos reservados</p>
-</footer>-->
+<!-- FOOTER -->
+<footer class="hq-footer" id="hq-footer">
+    <p class="footer-text">© 2026 Criado no Laboratório de Tecnologia da Dream Factory - Todos os direitos reservados</p>
+</footer>
 
 <script src="loader.js"></script>
 <script src="script.js"></script>
