@@ -437,10 +437,10 @@ section#section-8,
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    min-height: 100vh;
-    gap: 30px;
+    min-height: auto; /* Não força o conteúdo a ficar colado ao meio da tela */
+    gap: 80px; /* Aumenta a distância visual entre o logo e a frase no slide final */
     padding: 40px 20px;
-    padding-top: 50vh;
+    padding-top: 80px; /* Logo logo abaixo do fim do slide 7 */
     position: relative;
 }
 
@@ -451,7 +451,39 @@ section#section-8,
     object-fit: contain;
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.5));
     position: relative !important;
-    transform: translateY(0);
+    transform: translateY(-120px);
+}
+
+/* Frase final abaixo do logo - mais distância visual */
+.frase-final {
+    margin-top: 40px;
+}
+
+/* Ajustes específicos do slide final no mobile */
+@media (max-width: 768px) {
+    #section-8 .panel-final {
+        padding-top: 40px;  /* sobe o bloco no mobile */
+        gap: 48px;          /* reduz um pouco a distância entre logo e frase */
+        padding-bottom: 40px;
+    }
+
+    .logo-final {
+        max-width: 220px;
+    }
+
+    /* Garantir que o slide 8 possa mostrar todo o conteúdo no mobile */
+    #section-8,
+    #section-8 * {
+        overflow-y: visible !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #section-8 .panel-final {
+        padding-top: 32px;
+        gap: 40px;
+        padding-bottom: 32px;
+    }
 }
 
 /* Estilos de texto removidos - agora usando Tailwind CSS */
