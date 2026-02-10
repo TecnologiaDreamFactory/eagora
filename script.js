@@ -217,20 +217,31 @@
             if (!section8) return;
 
             gsap.set(section8, { opacity: 1, visibility: 'visible', display: 'flex' });
+            const isMobileView = window.innerWidth <= 768;
             
             const tlFinal = gsap.timeline({
-                scrollTrigger: {
-                    trigger: section8,
-                    start: "top bottom",
-                    end: "center center",
-                    scrub: 2.0 // Scrub alto para dar peso à explosão
-                }
+                scrollTrigger: isMobileView
+                    ? {
+                        trigger: section8,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                    : {
+                        trigger: section8,
+                        start: "top bottom",
+                        end: "center center",
+                        scrub: 2.0 // Scrub alto para dar peso à explosão no desktop
+                    }
             });
 
-            // Logo voando de baixo
+            // Logo voando de baixo (valores mais suaves no mobile)
             tlFinal.fromTo(section8.querySelector('.logo-final'), 
-                { y: 900, scale: 0.3, opacity: 0, rotation: -20 },
-                { y: 0, scale: 1.4, opacity: 1, rotation: 15, duration: 2.5, ease: "expo.out" }
+                isMobileView
+                    ? { y: 400, scale: 0.6, opacity: 0, rotation: -10 }
+                    : { y: 900, scale: 0.3, opacity: 0, rotation: -20 },
+                isMobileView
+                    ? { y: 0, scale: 1.1, opacity: 1, rotation: 5, duration: 1.6, ease: "expo.out" }
+                    : { y: 0, scale: 1.4, opacity: 1, rotation: 15, duration: 2.5, ease: "expo.out" }
             )
             // Ajuste final da logo (Bounce)
             .to(section8.querySelector('.logo-final'), {
@@ -240,11 +251,11 @@
                 ease: "elastic.out(1, 0.3)"
             });
 
-            // Frase final aparecendo
+            // Frase final aparecendo (começa meio segundo depois do logo)
             tlFinal.fromTo(section8.querySelector('.frase-final'), 
                 { opacity: 0, scaleX: 0.3, scaleY: 1.5, filter: "blur(5px)" },
                 { opacity: 1, scaleX: 1, scaleY: 1, filter: "blur(0px)", duration: 1.5, ease: "back.out(1.7)" }, 
-                "-=1"
+                ">+0.5"
             );
 
             // ============================================
